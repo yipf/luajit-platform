@@ -1,0 +1,7 @@
+require 'scripts/converters'
+
+local ffi=require "ffi"
+ffi.cdef(file2str("./interface.h"))
+API=ffi.load("./interface.so")
+
+require "works/test"
