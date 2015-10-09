@@ -7,7 +7,7 @@
 #include <math.h>
 
 scalar dot3d(scalar* A,scalar* B){
-	return A[0]*B[0]+A[1]*B[1]+A[2]*A[2];
+	return A[0]*B[0]+A[1]*B[1]+A[2]*B[2];
 }
 
 scalar* cross3d(scalar* A,scalar* B, scalar* C){
@@ -127,12 +127,12 @@ scalar* mv3d(scalar* M,scalar* V,scalar* MV){
 	return MV;
 }
 
-camera3d_t create_camera3d(void){
+camera3d_t create_camera3d(scalar dist){
 	camera3d_t camera;
 	scalar* data;
 	data=calloc(80,sizeof(scalar));
 	camera=data;
-	camera[POS_DIST]=1; /* camera's dist = 1 */
+	camera[POS_DIST]=dist; 
 	make_translate(data,0,0,0); 	/*init X,Y,Z,T*/
 	make_translate(data+PROJECTION,0,0,0); 	 /*init PROJECTION*/
 	make_translate(data+VIEW,0,0,0); 	 /*init VIEW*/
@@ -146,12 +146,15 @@ camera3d_t create_camera3d(void){
 }
 
 camera3d_t move_camera(camera3d_t camera,scalar right, scalar up, scalar back){
-	scalar rate;
-	scalar *V,*T,*data;
+	scalar rate,*V,*T;
 	T=camera+VEC_T; 	rate=camera[POS_DIST];
-	if(right!=0){ 	right*=rate; V=data+VEC_X; T[0]+=right*V[0];T[1]+=right*V[1];T[2]+=right*V[2];} /* T=T0+right*X */
-	if(up!=0){up*=rate; T[1]+=up;}
-	if(back!=0){back*=rate; V=data+VEC_Z; T[0]+=back*V[0];T[2]+=back*V[2];}
+	if(right){ 
+		right*=rate; 
+		V=camera+VEC_X; 
+		OP3AB(T,+=,right*V) /* T=T0+right*X */
+	}
+	if(up){up*=rate; T[1]+=up;}
+	if(back){back*=rate; V=camera+VEC_Z; T[0]+=back*V[0];T[2]+=back*V[2];}
 	return camera;
 }
 
@@ -159,16 +162,15 @@ static scalar PI=3.1415926535898;
 static scalar D_PI=6.2831853071796;
 
 camera3d_t rotate_camera(camera3d_t camera,scalar dh,scalar dv){
-	scalar h,v,hc,hs,vc,vs;
-	scalar *x,*y,*z;
+	scalar h,v,hc,hs,vc,vs,*X,*Y,*Z;
 	h=camera[POS_H]+dh; v=camera[POS_V]+dv;
 	while(h>PI)h-=D_PI;	while(h<-PI)h+=D_PI;	
 	while(v>PI)v-=D_PI;	while(v<-PI)v+=D_PI;	
-	x=camera+VEC_X;	y=camera+VEC_Y;	z=camera+VEC_Z;
+	X=camera+VEC_X;	Y=camera+VEC_Y;	Z=camera+VEC_Z;
 	hc=cos(h);	hs=sin(h);	vc=cos(v);	vs=sin(v);
-	z[0]=hs*vc;	z[1]=vs;	z[2]=hc*vc;
-	x[0]=hc;x[1]=0;x[2]=-hs;
-	y=cross3d(z,x,y);
+	Z[0]=hs*vc;	Z[1]=vs;	Z[2]=hc*vc;
+	X[0]=hc; 	X[1]=0; 	X[2]=-hs;
+	Y=cross3d(Z,X,Y);
 	camera[POS_H]=h;	camera[POS_V]=v;
 	return camera;
 }
@@ -207,7 +209,7 @@ camera3d_t set_camera_projection(camera3d_t camera,scalar near,scalar far,scalar
 
 camera3d_t set_camera_direction(camera3d_t camera, scalar x, scalar y, scalar z,scalar upx,scalar upy,scalar upz){
 	scalar* X,*Y,*Z;
-	X=camera+VEC_X; 	Y=camera+VEC_X; 	Z=camera+VEC_Z;
+	X=camera+VEC_X; 	Y=camera+VEC_Y; 	Z=camera+VEC_Z;
 	Z[0]=-x;	Z[1]=-y;	Z[2]=-z;
 	Y[0]=upx; Y[1]=upy;	Y[2]=upz;
 	cross3d(Y,Z,X); 	cross3d(Z,X,Y);
@@ -222,8 +224,9 @@ camera3d_t update_camera(camera3d_t camera){
 	X=camera+VEC_X; 	Y=camera+VEC_Y;  	Z=camera+VEC_Z;  	T=camera+VEC_T; 
 	d=camera[POS_DIST];
 	V=camera+VEC_TEMP;
-	V[0]=-d*Z[0]-T[0]; V[1]=-d*Z[1]-T[1];	V[2]=-d*Z[2]-T[2];
-	// get invert matrix 
+	//~ V[0]=-d*Z[0]-T[0]; V[1]=-d*Z[1]-T[1];	V[2]=-d*Z[2]-T[2];
+	OP3ABC(V,=,-d*Z,-,T)
+	// compute invert matrix 
 	view[0]=X[0];				view[1]=Y[0];				view[2]	=Z[0];			view[3]=0;
 	view[4]=X[1];				view[5]=Y[1];				view[6]	=Z[1];			view[7]=0;
 	view[8]=X[2];				view[9]=Y[2];				view[10]	=Z[2];			view[11]=0;
@@ -238,7 +241,7 @@ camera3d_t camera_look(camera3d_t camera){
 	glMultMatrixd(camera+VIEW);
 	 /* set modelview matrix*/
 	glMatrixMode(GL_MODELVIEW);
-	//~ glLoadIdentity();
+	glLoadIdentity();
 	return camera;
 }
 
@@ -326,6 +329,16 @@ int apply_options(int op){
 }
 
 
+int set_bg_color(scalar r,scalar g, scalar b, scalar a){
+	glClearColor (r, g, b, a);
+	return 0;
+}
+
+int clear_buffers(void){
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	return 0;
+}
+
 GLhandleARB compile_shader(const char* string,GLenum type){
 	GLhandleARB handle;
 	GLint result;				// Compilation code result
@@ -362,6 +375,11 @@ GLhandleARB build_shader(const char* vert,const char* frag){
 	return shadowShaderId;
 }
 
+GLhandleARB apply_shader(GLhandleARB shaderid){
+	glUseProgramObjectARB(shaderid);
+	return shaderid;
+}
+
 GLuint* create_shadowFBO(GLuint width,GLuint height){
 	GLuint* FBO;
 	FBO=calloc(4,sizeof(GLuint));
@@ -390,6 +408,7 @@ int prepare_render_shadow(camera3d_t light,GLuint* shadowFBO){
 	glCullFace(GL_FRONT); // only draw back faces
 	glUseProgramObjectARB(0);
 	camera_look(light);
+	return 0;
 }
 
 int bind_shadow2shader(camera3d_t light,GLuint* shadowFBO,GLuint shader){
@@ -408,6 +427,7 @@ int bind_shadow2shader(camera3d_t light,GLuint* shadowFBO,GLuint shader){
 	glMultMatrixd(light+PROJECTION);
 	glMultMatrixd(light+VIEW);
 	glActiveTextureARB(GL_TEXTURE0);
+	return 0;
 }
 
 int prepare_render_normal(camera3d_t camera){
@@ -470,5 +490,19 @@ int set_vertex(scalar x,scalar y,scalar z, scalar tx,scalar ty,scalar nx, scalar
 	glTexCoord2f(tx,ty);
 	glNormal3f(nx,ny,nz);
 	glVertex3f(x,y,z);
+	return 0;
+}
+
+int register_light_pos(int id,scalar x,scalar y,scalar z,scalar w){
+	float pos[4];
+	pos[0]=x; pos[1]=y; pos[2]=z; pos[3]=w;
+/* 	glMatrixMode(GL_MODELVIEW);
+ * 	glLoadIdentity();
+ * 	glEnable(GL_LIGHT0);
+ */
+	switch(id){
+		case 0: glLightfv (GL_LIGHT0, GL_POSITION, pos);			break;
+		default: break;
+	}
 	return 0;
 }

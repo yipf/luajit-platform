@@ -1,10 +1,6 @@
-require 'iupluagl'
 
-require 'lua-common/strstr'
-require '3D/drawers'
-require '3D/textures'
-require '3D/shaders'
-local API=API
+require 'iupluagl'
+require '3d'
 
 --- config btn
 local CONFIG_STR=[[
@@ -25,22 +21,52 @@ Shade: %b[Flat,Smooth]
 ]]
 
 local API=API
-local light_camera=API.create_camera()
-light_camera=API.make_camera(light_camera,0,0,0,0)
+
+local light_camera=API.create_camera3d(0)
 light_camera=API.set_camera_projection(light_camera,1,1000,math.rad(90),1)
 light_camera=API.update_camera(light_camera)
+
+local default_mouse_func=function(x,y)
+	
+end
+
+require "converters"
+
+local str2table=str2table
+
+local print_data=function(str,data,pos,n,step)
+	n,step=n or 1,step or 1
+	local t,s={}
+	print(str)
+	for i=1,n do
+		s=pos+(i-1)*step
+		for j=1,step do			t[j]=data[s+j-1]			end
+		print(table.concat(t,"\t"))
+	end
+end
+
+local print_camera=function(camera)
+	print_data("X",camera,API.VEC_X,1,4)
+	print_data("Y",camera,API.VEC_Y,1,4)
+	print_data("Z",camera,API.VEC_Z,1,4)
+	print_data("T",camera,API.VEC_T,1,4)
+	print_data("PROJECTION",camera,API.PROJECTION,4,4)
+	print_data("VIEW",camera,API.VIEW,4,4)
+	print_data("BIAS",camera,API.BIAS,4,4)
+end
+
 
 make_gl_canvas=function(scn,camera,w,h)
 	local cfg=scn.config or {"Config The Opengl Windows",0,1,0,"65 105 225",1,1,2,1,1,1,1}
 	local MakeCurrent,SwapBuffer,Update=iup.GLMakeCurrent,iup.GLSwapBuffers,iup.Update
 	local isleft,ismiddle,isright,isshift=iup.isbutton1,iup.isbutton2,iup.isbutton3,iup.isshift
-	local click_func,move_func=scn.click_func,scn.move_func
+	local click_func,move_func=scn.click_func or default_mouse_func,scn.move_func or default_mouse_func
 	
 	local mouse_xy={0,0}
 	local F1,FORWARD,BACKWARD,LEFT,RIGHT,UP,DOWN,ZOOM_IN,ZOOM_OUT,RESET=iup.K_F1,iup.K_w,iup.K_s,iup.K_a,iup.K_d,iup.K_q,iup.K_e,iup.K_z,iup.K_x,iup.K_r
 	local init
 	
-	local org,dir,cp=API.create_vec4(0,0,0),API.create_vec4(0,0,0),API.create_vec4(0,0,0)
+	local ray,cp=API.alloc_data(8),API.alloc_data(4)
 	
 	local step,rate=1
 	local glcanvas
@@ -48,7 +74,8 @@ make_gl_canvas=function(scn,camera,w,h)
 	local light_shader=scn.light_shader
 	local light=true
 	
-	local shadow_render
+	local shadow_FBO
+	local rgba={}
 	
 	local apply_cfg=function(cfg)
 		local s,fog,a,bg,l,x,y,z,cf,mode,shade=unpack(cfg,2)
@@ -64,55 +91,57 @@ make_gl_canvas=function(scn,camera,w,h)
 		if cf==1 then op=op+API.CULL_FACE end
 		if mode==1 then op=op+API.FILL end
 		if shade==1 then op=op+API.SMOOTH end
-		API.gl_options(op)
-		API.gl_set_light(0,x,y,z,0)
+		API.apply_options(op)
+		-- setting up light
+		scn.light_matrix[12]=x 	scn.light_matrix[13]=y 	scn.light_matrix[14]=z 	
 		API.set_camera_position(light_camera,x,y,z)
+		API.register_light_pos(0,x,y,z,1)
 		if x+z~=0 then 
 			API.set_camera_direction(light_camera,-x,-y,-z,0,1,0)
 		else
 			API.set_camera_direction(light_camera,-x,-y,-z,1,0,0)
 		end
 		API.update_camera(light_camera)
-		local t=str2table(bg,"%S+",tonumber)
-		local r,g,b,a=unpack(t)
-		API.gl_set_bg_color(r or 0,g or 0,b or 0, a or 255)
+		rgba=str2table(bg,"%S+",rgba)
+		local r,g,b,a=unpack(rgba)
+		API.set_bg_color(tonumber(r or 0)/255,tonumber(g or 0)/255,tonumber(b or 0)/255, tonumber(a or 0)/255)
 		Update(glcanvas)
 	end
-	local init_scn,draw_scn=init_scn,draw_scn
-	local shaders=Shaders
+	
+	local init_scn,draw_scn=init_node,draw_node
 	
 	glcanvas=iup.glcanvas{ buffer="DOUBLE", rastersize = w..'x'..h,
 		map_cb=function(o)
 			MakeCurrent(o)
 			if not init then -- init the opengl context via gle-init
-				API.my_init() 
-				shadow_render=API.create_render(2048,2048,API.DEPTH)
+				API.init_opengl() 
+				shadow_FBO=API.create_shadowFBO(2048,2048)
 				init=true 
 			end
 			init_scn(scn) -- init scene
 			if scn.prepare then init_scn(scn.prepare) end
-			light_shader=light_shader and shaders(light_shader) or 0
+			light_shader= Shaders("scripts/Shaders/spot-light&shadow.shader") or 0
 			apply_cfg(cfg) 
-			API.gl_set_viewport(0,0,w,h)
+			API.set_viewport(0,0,w,h)
 		end,
 		action=function(o)
 			MakeCurrent(o)
-			API.gl_clear_all()
+			API.clear_buffers()
 			if light then 
-				API.build_shadowmap(light_camera,shadow_render)
+				API.prepare_render_shadow(light_camera,shadow_FBO)
 				draw_scn(scn)
-				API.bind_shadowmap(light_camera,light_shader,shadow_render)
-				API.camera_look(camera)
+				API.bind_shadow2shader(light_camera,shadow_FBO,light_shader)
+				API.prepare_render_normal(camera)
 			else
+				API.apply_shader(0)
 				API.camera_look(camera)
-				API.apply_shader(0) 
 			end
 			draw_scn(scn)
 			SwapBuffer(o)
 		end,
 		resize_cb=function(o,w_,h_)
 			MakeCurrent(o)
-			API.gl_set_viewport(0,0,w_,h_)
+			API.set_viewport(0,0,w_,h_)
 			API.resize_camera(camera,(h_/w_)/(h/w),1)
 			w,h=w_,h_
 			Update(o)
@@ -136,7 +165,7 @@ make_gl_canvas=function(scn,camera,w,h)
 				return true
 			elseif isleft(status) and move_func then
 				x,y=x/w-0.5, 0.5-y/h
-				API.xy2ray(camera,x*2,y*2,org,dir)
+				API.camera3d_xy2ray(camera,x*2,y*2,ray)
 				move_func(org,dir,cp,camera)
 				Update(o)
 				return true
@@ -147,7 +176,7 @@ make_gl_canvas=function(scn,camera,w,h)
 		button_cb=function(o,but, pressed, x, y, status)-- mouse button
 			if pressed==1 and isleft(status) and click_func then
 				x,y=x/w-0.5, 0.5-y/h
-				API.xy2ray(camera,x*2,y*2,org,dir)
+				API.camera3d_xy2ray(camera,x*2,y*2,ray)
 				click_func(org,dir,cp)
 				Update(o)
 				return true

@@ -48,6 +48,16 @@ objstr=function(obj,str)
 	end
 end
 
+str2table=function(str,pattern,t)
+	t=t or {}
+	local i=0
+	for s in string.gmatch(str,pattern or "%S+") do
+		i=i+1
+		t[i]=s
+	end
+	return t
+end
+
 ------------------------------------------------------------------------------------------------------------
 -- file <------> lua obj
 ------------------------------------------------------------------------------------------------------------

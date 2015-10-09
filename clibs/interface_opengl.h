@@ -41,7 +41,7 @@ enum OFFSET{VEC_X=0,VEC_Y=1<<2,VEC_Z=2<<2,VEC_T=3<<2,PROJECTION=1<<4,VIEW=2<<4,B
 
 typedef scalar* camera3d_t; 
 
-camera3d_t create_camera3d(void);
+camera3d_t create_camera3d(scalar dist);
 
 camera3d_t move_camera(camera3d_t camera,scalar right, scalar up, scalar back);
 camera3d_t rotate_camera(camera3d_t camera,scalar dh,scalar dv);
@@ -64,6 +64,8 @@ enum GL_OPTIONS{TEXTURE_2D=2,LIGHTING=4,CULL_FACE=8,BLEND=16,FILL=32,SMOOTH=64,F
 int init_opengl(void);
 int set_viewport(int x,int y,int w, int h);
 int apply_options(int options);
+int set_bg_color(scalar r,scalar g, scalar b, scalar a);
+int clear_buffers(void);
 
 /* matrix */
 scalar* push_matrix(scalar* matrix);
@@ -74,6 +76,7 @@ scalar* pop_matrix(scalar* matrix);
 GLhandleARB compile_shader(const char* string,GLenum type);
 GLhandleARB build_shader(const char* vert,const char* frag);
 GLuint* create_shadowFBO(GLuint width,GLuint height);
+GLhandleARB apply_shader(GLhandleARB shaderid);
 
 /* rander FBO */
 
@@ -94,6 +97,7 @@ int begin_draw(int type);
 int end_draw(void);
 int set_vertex(scalar x,scalar y,scalar z, scalar tx,scalar ty,scalar nx, scalar ny, scalar nz);
 
+int register_light_pos(int id,scalar x,scalar y,scalar z,scalar w);
 #endif
 
 
