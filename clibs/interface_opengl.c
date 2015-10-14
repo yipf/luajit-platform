@@ -33,14 +33,15 @@ scalar* add3d(scalar *A,scalar *B,scalar *C){
 	return C;
 }
 
-scalar* normalize3d(scalar*A, scalar*NA){
-	scalar s;
-	s=dot3d(A,A);
-	if(s==0) return 0;
-	s=1.0/sqrt(s);
-	NA=NA?NA:alloc_data(4);
-	OP3AB(NA,=,s*A)
-	return NA;
+scalar* normalize3d(scalar*A){
+	scalar x,y,z,s;
+	x=A[0]; 	y=A[1]; 	z=A[2];
+	s=x*x+y*y+z*z;
+	if(s>0.0){
+		s=1/sqrt(s);
+		A[0]=s*x; 	A[1]=s*y; 	A[2]=s*z;
+	}
+	return A;
 }
 
 scalar* make_rotate(scalar* mat,scalar x,scalar y, scalar z, scalar ang){
@@ -54,7 +55,6 @@ scalar* make_rotate(scalar* mat,scalar x,scalar y, scalar z, scalar ang){
 	mat[3]=0;						mat[7]=0	;					mat[11]=0;						mat[15]=1;
 	return mat;
 }
-
 
 scalar* make_scale(scalar* mat,scalar sx,scalar sy,scalar sz){
 	mat=mat?mat:alloc_data(16);
@@ -123,7 +123,7 @@ scalar* mv3d(scalar* M,scalar* V,scalar* MV){
 	MV[0]=m11*v1+m12*v2+m13*v3+m14*v4;
 	MV[1]=m21*v1+m22*v2+m23*v3+m24*v4;
 	MV[2]=m31*v1+m32*v2+m33*v3+m34*v4;
-	MV[4]=m41*v1+m42*v2+m43*v3+m44*v4;
+	MV[3]=m41*v1+m42*v2+m43*v3+m44*v4;
 	return MV;
 }
 
@@ -213,7 +213,7 @@ camera3d_t set_camera_direction(camera3d_t camera, scalar x, scalar y, scalar z,
 	Z[0]=-x;	Z[1]=-y;	Z[2]=-z;
 	Y[0]=upx; Y[1]=upy;	Y[2]=upz;
 	cross3d(Y,Z,X); 	cross3d(Z,X,Y);
-	normalize3d(X,X); normalize3d(Y,Y); normalize3d(Z,Z); 
+	normalize3d(X); normalize3d(Y); normalize3d(Z); 
 	return camera;
 }
 
@@ -255,7 +255,7 @@ scalar*  camera3d_xy2ray(camera3d_t camera, scalar x, scalar y,scalar* ray){ /* 
 	x/=projection[0]; y/=projection[5];
 	OP3ABC(dir,=,x*X,+,y*Y);
 	OP3ABC(dir,=,dir,-,Z);
-	normalize3d(dir,dir);
+	normalize3d(dir);
 	return ray;
 }
 
@@ -487,9 +487,16 @@ int end_draw(void){
 }
 
 int set_vertex(scalar x,scalar y,scalar z, scalar tx,scalar ty,scalar nx, scalar ny, scalar nz){
-	glTexCoord2f(tx,ty);
-	glNormal3f(nx,ny,nz);
-	glVertex3f(x,y,z);
+	glTexCoord2d(tx,ty);
+	glNormal3d(nx,ny,nz);
+	glVertex3d(x,y,z);
+	return 0;
+}
+
+int set_vertex_v(scalar* V,scalar* N,scalar tx,scalar ty){
+	glTexCoord2d(tx,ty);
+	glNormal3dv(N);
+	glVertex3dv(V);
 	return 0;
 }
 
@@ -506,3 +513,5 @@ int register_light_pos(int id,scalar x,scalar y,scalar z,scalar w){
 	}
 	return 0;
 }
+
+

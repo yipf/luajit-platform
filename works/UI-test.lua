@@ -14,16 +14,31 @@ action=function()
    API.mm3d(mat,rot,mat)
 end}
 
+
+local red={"color",{255,0,0}}
+local sm=API.make_scale(nil,0.3,0.3,0.3)
+local mt=API.make_translate(nil,0,1,0)
+mt=API.mm3d(mt,sm,mt)
+
+local arc=make_arc(1.0,9,0,math.rad(270),true)
+local path=curve2path(arc)
+local curve={drawer={"path",path,COMPILE=true},material=red,matrix=mt}
+
+local tm=API.make_translate(nil,0.5,0.5,0)
+local sm=API.make_scale(nil,0.3,0.3,0.3)
+tm=API.mm3d(tm,sm,tm)
+local grid_data=create_grid(3,3,false,false,function(i,j) return  j,i,-i*j end)
+
+local grid={drawer={"grid",grid_data; COMPILE=true},material=red,matrix=tm}
+
+
+
 local scn={
 light_matrix=light_matrix,
 drawer={"plane",3,COMPILE=true},
 material={"color",{255,255,255}},
-children={light,box1},
+children={light,box1,grid,curve},
 }
-
-local update_scn=update_node
-
-
 
 ------------------------------------------------------------------------------------------
 -- UI
@@ -45,8 +60,9 @@ local gl_panel=frame{title="GL",glw}
 
 
 local Update=iup.Update
+local update_node=update_node
 local timer_toggle,timer=make_timer("timer",30,function()
-    update_scn(scn)
+    update_node(scn)
 	Update(glw)
 end)
 

@@ -30,7 +30,7 @@ local default_mouse_func=function(x,y)
 	
 end
 
-require "converters"
+require "utils"
 
 local str2table=str2table
 

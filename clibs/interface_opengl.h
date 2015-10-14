@@ -7,6 +7,8 @@
 #define OP3ABC(C,eq,A,op,B) 	C[0] eq A[0] op B[0];	C[1] eq A[1] op B[1];	C[2] eq A[2] op B[2];
 #define OP3AB(B,eq,A) 	B[0] eq A[0] ;	B[1] eq A[1] ;	B[2] eq A[2] ;
 
+#define ASSERT(state,msg,value) if(state){printf("\n%s:%d:\t%s\n ",__FILE__,__LINE__,#state);printf(msg); return value;}
+
 /* vector */
 
 scalar dot3d(scalar* A,scalar* B); 	/* return dot(A,B) */
@@ -14,7 +16,7 @@ scalar* cross3d(scalar* A,scalar* B, scalar* C); /* C=cross(A,B)	*/
 
 scalar* sub3d(scalar *A,scalar *B,scalar *C); 	/* C=A-B */
 scalar* add3d(scalar *A,scalar *B,scalar *C); 	/* C=A+B */
-scalar* normalize3d(scalar*A, scalar*NA); /* NA=normalize(A) */
+scalar* normalize3d(scalar*A);
 
 /* matrix (column-major)*/
 
@@ -96,8 +98,13 @@ enum{POINTS,LINES,POLYGON,TRIANGLES,QUADS,LINE_STRIP,LINE_LOOP,TRIANGLE_STRIP,TR
 int begin_draw(int type);
 int end_draw(void);
 int set_vertex(scalar x,scalar y,scalar z, scalar tx,scalar ty,scalar nx, scalar ny, scalar nz);
+int set_vertex_v(scalar* V,scalar* N,scalar tx,scalar ty);
 
 int register_light_pos(int id,scalar x,scalar y,scalar z,scalar w);
+
+
+
+
 #endif
 
 

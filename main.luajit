@@ -3,7 +3,7 @@ local DIR="/home/yipf/luajit-platform/scripts"
 package.path=DIR.."/?.lua;"..package.path
 package.cpath="/usr/lib/lib?51.so;/usr/lib/lib?.so;"..package.cpath
 
-require 'converters'
+require 'utils'
 
 local ffi=require "ffi"
 ffi.cdef(file2str("./interface.h"))

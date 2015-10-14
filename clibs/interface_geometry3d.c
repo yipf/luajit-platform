@@ -1,6 +1,7 @@
 
-#include "interface_opengl.h"
+#include "interface_geometry3d.h"
 #include <math.h>
+#include <stdio.h>
 
 scalar* diff3d(int n,scalar* A, int astep,scalar* D,int dstep,int close){ /* D=diff(A) */
 	int i;
@@ -46,3 +47,10 @@ scalar* ray_hit_plane(scalar* ray,scalar* plane, scalar* crosspoint){
 	return 0;
 }
 
+scalar* applyXYZT(scalar*sV,scalar* dV,scalar* X,scalar* Y,scalar* Z,scalar* T){
+	scalar x,y,z;
+	x=sV[0]; 	y=sV[1]; 	z=sV[2];
+	OP3ABC(dV,=,x*X,+,y*Y);
+	OP3ABC(dV,+=,z*Z,+,T);
+	return dV;
+}

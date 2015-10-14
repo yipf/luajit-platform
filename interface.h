@@ -33,7 +33,9 @@ scalar* test_ray_hit_sphere(scalar* ray, scalar* sphere,  scalar* temp);/* test 
 scalar* ray_hit_plane(scalar* ray,scalar* plane, scalar* crosspoint);/* compute the crosspoint cp between a given ray and a  */
 
 
+scalar* draw_mesh(int m,int n, scalar* vertex, scalar* normals, int uv_closed);
 
+scalar* applyXYZT(scalar*sV,scalar* dV,scalar* X,scalar* Y,scalar* Z,scalar* T);
 
 scalar* alloc_data(int n);
 
@@ -58,7 +60,7 @@ scalar* cross3d(scalar* A,scalar* B, scalar* C); /* C=cross(A,B)	*/
 
 scalar* sub3d(scalar *A,scalar *B,scalar *C); 	/* C=A-B */
 scalar* add3d(scalar *A,scalar *B,scalar *C); 	/* C=A+B */
-scalar* normalize3d(scalar*A, scalar*NA); /* NA=normalize(A) */
+scalar* normalize3d(scalar*A);
 
 /* matrix (column-major)*/
 
@@ -139,7 +141,10 @@ enum{POINTS,LINES,POLYGON,TRIANGLES,QUADS,LINE_STRIP,LINE_LOOP,TRIANGLE_STRIP,TR
 int begin_draw(int type);
 int end_draw(void);
 int set_vertex(scalar x,scalar y,scalar z, scalar tx,scalar ty,scalar nx, scalar ny, scalar nz);
+int set_vertex_v(scalar* V,scalar* N,scalar tx,scalar ty);
 
 int register_light_pos(int id,scalar x,scalar y,scalar z,scalar w);
+
+
 
 

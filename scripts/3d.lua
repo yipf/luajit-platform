@@ -145,3 +145,22 @@ drawer_hooks["box"]=function(drawer)
 	API.end_draw()
 end
 
+require "Shapes"
+
+drawer_hooks["grid"]=function(drawer)
+	local grid=drawer[2]
+	attach_normals(grid)
+	attach_texcoords(grid)
+	draw_grid_raw(grid)
+end
+
+local circle=make_arc(0.5,11,0,math.rad(330),true)
+
+drawer_hooks["path"]=function(drawer)
+	local base=drawer.base or circle
+	local grid=drawer.grid or path2grid(drawer[2],base)
+	attach_normals(grid)
+	attach_texcoords(grid)
+	draw_grid_raw(grid)
+	drawer.grid,drawer.base=grid,base
+end
