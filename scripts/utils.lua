@@ -77,5 +77,5 @@ samples=function(s,e,n,t)
 	local d=(e-s)/n
 	t=t or {}
 	for i=0,n do t[i+1]=s+i*d end
-	return t,n
+	return t
 end

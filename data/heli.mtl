@@ -1,0 +1,172 @@
+# Created with Anim8or 0.97d beta
+# Object "12Apache3d":
+
+newmtl 70mm
+Ka 0 0 0
+Kd 0.157 0.157 0.157
+Ks 0.898 0.898 0.898
+d 1.0
+Ns 501.7
+
+newmtl Silver_Deep
+Ka 0 0 0
+Kd 0.498 0.447 0.404
+Ks 1 1 1
+d 1.0
+Ns 702.4
+
+newmtl Wing
+Ka 0 0 0
+Kd 0.157 0.157 0.157
+Ks 0.898 0.898 0.898
+d 1.0
+Ns 10.0
+
+newmtl Wing2
+Ka 0 0 0
+Kd 0.157 0.157 0.157
+Ks 1 1 1
+d 1.0
+Ns 10.0
+
+newmtl Metalic
+Ka 0 0 0
+Kd 0.235 0.212 0.192
+Ks 1 1 1
+d 1.0
+Ns 10.0
+
+newmtl Greenbas
+Ka 0 0 0
+Kd 0.157 0.157 0.157
+Ks 1 1 1
+d 1.0
+Ns 100.3
+
+newmtl Darkgreen
+Ka 0 0 0
+Kd 0.157 0.157 0.157
+Ks 1 1 1
+d 1.0
+Ns 170.6
+
+newmtl Ammo
+Ka 0 0 0
+Kd 0.216 0.192 0.176
+Ks 1 1 1
+d 1.0
+Ns 10.0
+
+newmtl Glass
+Ka 0 0 0
+Kd 0.29 0.29 0.29
+Ks 1 1 1
+d 0.4
+Ns 582.0
+
+newmtl Side
+Ka 0 0 0
+Kd 0.157 0.157 0.157
+Ks 0.898 0.898 0.898
+d 1.0
+Ns 10.0
+
+newmtl Black_tire
+Ka 0 0 0
+Kd 0.125 0.125 0.125
+Ks 1 1 1
+d 1.0
+Ns 291.0
+
+newmtl Rotor
+Ka 0 0 0
+Kd 0.0588 0.051 0
+Ks 1 1 1
+d 1.0
+Ns 321.1
+
+newmtl Clear_blue
+Ka 0 0 0
+Kd 0.408 0.58 0.839
+Ks 1 1 1
+d 1.0
+Ns 10.0
+
+newmtl Material_#5
+Ka 0 0 0
+Kd 0.522 0.522 0.522
+Ks 1 1 1
+d 0.3
+Ns 471.6
+
+newmtl ___default___
+Ka 0.878 0.878 0.878
+Kd 0.878 0.878 0.878
+Ks 1 1 1
+d 1.0
+Ns 752.6
+
+newmtl Material_#51
+Ka 0 0 0
+Kd 0.169 0.278 0.125
+Ks 1 1 1
+d 0.3
+Ns 1003.4
+
+newmtl Gun_metal
+Ka 0 0 0
+Kd 0.216 0.192 0.176
+Ks 1 1 1
+d 1.0
+Ns 822.8
+
+newmtl Red
+Ka 0 0 0
+Kd 0 0 0
+Ks 1 1 1
+d 1.0
+Ns 200.7
+map_Kd LIGHT.JPG
+
+newmtl Fuselage
+Ka 0 0 0
+Kd 0.0353 0.098 0
+Ks 1 1 1
+d 1.0
+Ns 100.3
+
+newmtl Fuselage2
+Ka 0 0 0
+Kd 0.0353 0.098 0
+Ks 0.992 0.992 0.992
+d 1.0
+Ns 10.0
+
+newmtl Yellow
+Ka 0 0 0
+Kd 0.98 0.808 0
+Ks 1 1 1
+d 1.0
+Ns 10.0
+
+newmtl Flatblack
+Ka 0 0 0
+Kd 0.0471 0.0471 0.0471
+Ks 1 1 1
+d 1.0
+Ns 10.0
+
+newmtl Conopi
+Ka 0 0 0
+Kd 0.0353 0.098 0
+Ks 1 1 1
+d 1.0
+Ns 100.3
+
+newmtl Material_#73
+Ka 0 0 0
+Kd 0.0353 0.098 0
+Ks 1 1 1
+d 1.0
+Ns 100.3
+

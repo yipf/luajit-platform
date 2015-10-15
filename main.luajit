@@ -10,4 +10,4 @@ ffi.cdef(file2str("./interface.h"))
 API=ffi.load("./interface.so")
 
 --~ require "works/math-test"
-require "works/UI-test"
+require "works/particle"

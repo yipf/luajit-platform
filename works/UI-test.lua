@@ -21,23 +21,27 @@ local mt=API.make_translate(nil,0,1,0)
 mt=API.mm3d(mt,sm,mt)
 
 local arc=make_arc(1.0,9,0,math.rad(270),true)
-local path=curve2path(arc)
-local curve={drawer={"path",path,COMPILE=true},material=red,matrix=mt}
+local base=make_arc(0.2,11,0,math.rad(330),true)
+local grid=path2grid(curve2path(arc),base)
+local curve={drawer={"mesh",grid2mesh(grid),COMPILE=true},material=red,matrix=mt}
 
 local tm=API.make_translate(nil,0.5,0.5,0)
 local sm=API.make_scale(nil,0.3,0.3,0.3)
 tm=API.mm3d(tm,sm,tm)
-local grid_data=create_grid(3,3,false,false,function(i,j) return  j,i,-i*j end)
 
-local grid={drawer={"grid",grid_data; COMPILE=true},material=red,matrix=tm}
+local grid=create_grid(3,3,false,false,function(i,j) return  j,i,-i*j end)
 
+local grid={drawer={"mesh",grid2mesh(grid); COMPILE=true},material=red,matrix=tm}
 
+require "plugins/obj"
+
+local dragon={drawer={"obj","data/dragon.obj",COMPILE=true}}
 
 local scn={
 light_matrix=light_matrix,
 drawer={"plane",3,COMPILE=true},
 material={"color",{255,255,255}},
-children={light,box1,grid,curve},
+children={light,box1,grid,curve,dragon},
 }
 
 ------------------------------------------------------------------------------------------

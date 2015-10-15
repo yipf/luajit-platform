@@ -104,27 +104,27 @@ end
 
 require "utils"
 
-draw_grid_raw=function(grid)
-	local m,n,u_closed,v_closed=grid.M, grid.N, grid.u_closed, grid.v_closed
-	local normals,us,vs=grid.normals,grid.us,grid.vs
+draw_mesh=function(mesh)
+	local m,n,u_closed,v_closed=mesh.M, mesh.N, mesh.u_closed, mesh.v_closed
+	local normals,us,vs=mesh.normals,mesh.us,mesh.vs
 	for i=1,m-1 do
-		draw_strip(n,grid[i+1],normals[i+1],grid[i],normals[i],us,us,vs[i+1],vs[i],u_closed)
+		draw_strip(n,mesh[i+1],normals[i+1],mesh[i],normals[i],us,us,vs[i+1],vs[i],u_closed)
 		if v_closed then
-			draw_strip(n,grid[1],normals[1],grid[m],normals[m],us,us,vs[m+1],vs[m],u_closed)
+			draw_strip(n,mesh[1],normals[1],mesh[m],normals[m],us,us,vs[m+1],vs[m],u_closed)
 		end
 	end
-	return grid
+	return mesh
 end
 
 curve2path=function(curve,path)
 	local closed=curve.closed
 	local Z=diff3d(curve,closed)
-	local Y=diff3d(Z,closed)
+	local N=diff3d(Z,closed)
 	path=path or {}
 	local x,y,z,p
 	for i,v in ipairs(curve) do
-		z=Z[i]		y=Y[i]
-		x=API.cross3d(y,z,nil)
+		z=Z[i]		y=N[i]
+		x=API.cross3d(z,y,nil)
 		y=API.cross3d(z,x,y)
 		path[i]={API.normalize3d(x),API.normalize3d(y),API.normalize3d(z),v}
 	end
@@ -146,6 +146,11 @@ path2grid=function(path,curve)
 	return grid
 end
 
+grid2mesh=function(grid)
+	attach_normals(grid)
+	attach_texcoords(grid)
+	return grid
+end
 --------------------------------------------------------------------------------------------
 -- special functions
 --------------------------------------------------------------------------------------------
@@ -154,7 +159,7 @@ make_arc=function(r,n,s,e,closed)
 	r,n=r or 1,n or 3
 	s,e=s or 0,e or math.rad(270)
 	local angs=samples(s,e,n)
-	local arc=create_curve(n,closed)
+	local arc=create_curve(n+1,closed)
 	local cos,sin=math.cos,math.sin
 	local ang
 	for i,v in ipairs(arc) do
@@ -163,5 +168,7 @@ make_arc=function(r,n,s,e,closed)
 	end
 	return arc
 end
+
+
 
 

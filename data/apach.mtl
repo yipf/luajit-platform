@@ -1,0 +1,159 @@
+# Created with Anim8or 0.97d beta
+# Object "HOKUM_L":
+
+newmtl hokufusj
+Ka 0.251 0.29 0.231
+Kd 0.251 0.29 0.231
+Ks 0.898 0.898 0.898
+d 1.0
+Ns 401.4
+
+newmtl hoku015
+Ka 0.251 0.29 0.231
+Kd 0.251 0.29 0.231
+Ks 0.898 0.898 0.898
+d 1.0
+Ns 10.0
+map_Kd HOKU015.JPG
+
+newmtl hokutrb
+Ka 0.0941 0.00784 0.0353
+Kd 0.0941 0.00784 0.0353
+Ks 0.898 0.898 0.898
+d 1.0
+Ns 401.4
+
+newmtl hokuala
+Ka 0.0784 0.263 0.431
+Kd 0.0784 0.263 0.431
+Ks 0.898 0.898 0.898
+d 1.0
+Ns 401.4
+
+newmtl hokubalt
+Ka 0.251 0.29 0.231
+Kd 0.251 0.29 0.231
+Ks 0.898 0.898 0.898
+d 1.0
+Ns 401.4
+
+newmtl hokualcu
+Ka 0.251 0.29 0.231
+Kd 0.251 0.29 0.231
+Ks 0.898 0.898 0.898
+d 1.0
+Ns 401.4
+
+newmtl hokufusd
+Ka 0.216 0.251 0.118
+Kd 0.216 0.251 0.118
+Ks 0.898 0.898 0.898
+d 1.0
+Ns 401.4
+
+newmtl hokucrom
+Ka 0.114 0.114 0.114
+Kd 0.114 0.114 0.114
+Ks 1 1 1
+d 1.0
+Ns 301.0
+
+newmtl hokucris
+Ka 0.00392 0.259 0.208
+Kd 0.00392 0.259 0.208
+Ks 1 1 1
+d 0.5
+Ns 1003.4
+
+newmtl hokuest
+Ka 0.251 0.29 0.231
+Kd 0.251 0.29 0.231
+Ks 1 1 1
+d 1.0
+Ns 10.0
+map_Kd HOKUEST.JPG
+
+newmtl hokuflus
+Ka 0.165 0.114 0.0706
+Kd 0.165 0.114 0.0706
+Ks 0.898 0.898 0.898
+d 1.0
+Ns 401.4
+
+newmtl hokuheli
+Ka 0 0 0
+Kd 0 0 0
+Ks 1 1 1
+d 1.0
+Ns 301.0
+
+newmtl hokumok
+Ka 0.251 0.29 0.231
+Kd 0.251 0.29 0.231
+Ks 0.898 0.898 0.898
+d 1.0
+Ns 401.4
+
+newmtl hokupik
+Ka 0.251 0.29 0.231
+Kd 0.251 0.29 0.231
+Ks 0.898 0.898 0.898
+d 1.0
+Ns 401.4
+
+newmtl hokupied
+Ka 0.251 0.29 0.231
+Kd 0.251 0.29 0.231
+Ks 0.898 0.898 0.898
+d 1.0
+Ns 401.4
+
+newmtl hokusjpp
+Ka 0.294 0.294 0.294
+Kd 0.294 0.294 0.294
+Ks 1 1 1
+d 1.0
+Ns 301.0
+
+newmtl hokuroj
+Ka 1 0 0
+Kd 1 0 0
+Ks 1 1 1
+d 1.0
+Ns 401.4
+
+newmtl hokubmpr
+Ka 0.227 0.204 0.196
+Kd 0.227 0.204 0.196
+Ks 0.898 0.898 0.898
+d 1.0
+Ns 401.4
+
+newmtl hokusbmk
+Ka 0.251 0.29 0.231
+Kd 0.251 0.29 0.231
+Ks 0.898 0.898 0.898
+d 1.0
+Ns 401.4
+
+newmtl hokusup
+Ka 0.251 0.29 0.231
+Kd 0.251 0.29 0.231
+Ks 0.898 0.898 0.898
+d 1.0
+Ns 401.4
+
+newmtl hokualon
+Ka 0.251 0.29 0.231
+Kd 0.251 0.29 0.231
+Ks 0.898 0.898 0.898
+d 1.0
+Ns 401.4
+
+newmtl hokuturb
+Ka 0.251 0.29 0.231
+Kd 0.251 0.29 0.231
+Ks 0.898 0.898 0.898
+d 1.0
+Ns 401.4
+

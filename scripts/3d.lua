@@ -5,28 +5,28 @@ local type,assert,format=type,assert,string.format
 
 local drawer_hooks,texture_hooks={},{}
 
-drawfunc2calllist=function(...)
-	local id=API.gen_list_begin()
-	pcall(...)
-	API.gen_list_end()
-	return id
-end
-
-drawfunc2calllist_func=function(func)
-	local id=drawfunc2calllist(func)
-	return function() API.call_list(id) end
-end
-
 drawer2func=function(drawer)
 	drawer=type(drawer)=="table" and drawer or {drawer}
 	local key=drawer[1]
 	assert(key,"Please define a valid drawer!")
 	local hook=drawer_hooks[key]
 	assert(hook,format("Not a valid drawer type %q !",key))
+	if drawer.COMPILE then
+		local id=API.gen_list_begin()
+		hook(drawer)
+		API.gen_list_end()
+		return function()
+			API.call_list(id)
+		end
+	end
 	return function() hook(drawer) end
 end
 
 Drawers=make_factory(drawer2func)
+
+register_drawer_hook=function(key,hook)
+	drawer_hooks[key]=hook
+end
 
 material2func=function(material)
 	local texture=material.texture or material
@@ -73,8 +73,7 @@ end
 local init_node_
 init_node_=function(node)
 	local drawer,material,children=node.drawer,node.material,node.children
-	if drawer then node.drawer=Drawers(drawer)  end
-	if drawer.COMPILE then node.drawer=drawfunc2calllist_func(node.drawer) end
+	if drawer and type(drawer)=="table" then node.drawer=Drawers(drawer)  end
 	if material then node.material=Materials(material)  end
 	do_each(node.children,init_node_)
 	return node
@@ -147,20 +146,27 @@ end
 
 require "Shapes"
 
-drawer_hooks["grid"]=function(drawer)
-	local grid=drawer[2]
-	attach_normals(grid)
-	attach_texcoords(grid)
-	draw_grid_raw(grid)
+drawer_hooks["mesh"]=function(drawer)
+	draw_mesh(drawer[2])
 end
 
-local circle=make_arc(0.5,11,0,math.rad(330),true)
-
-drawer_hooks["path"]=function(drawer)
-	local base=drawer.base or circle
-	local grid=drawer.grid or path2grid(drawer[2],base)
-	attach_normals(grid)
-	attach_texcoords(grid)
-	draw_grid_raw(grid)
-	drawer.grid,drawer.base=grid,base
+drawer_hooks["particle"]=function(drawer)
+	local func,positions,matrix=drawer.draw_func,drawer.positions,drawer.matrix
+	if not func then
+		func=Drawers(drawer[2])
+		drawer.draw_func=func
+	end
+	if not matrix then
+		matrix=API.make_translate(nil,0,0,0)
+		drawer.matrix=matrix
+	end
+	if positions then
+		for i,pos in ipairs(positions) do
+			matrix[12],matrix[13],matrix[14]=pos[1],pos[2],pos[3]
+			API.push_matrix(matrix)
+			func()
+			API.pop_matrix(matrix)
+		end
+	end
 end
+

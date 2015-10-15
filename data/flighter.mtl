@@ -1,0 +1,257 @@
+# Created with Anim8or 0.97d beta
+# Object "HORNET_L":
+
+newmtl FlatBlac
+Ka 0 0 0
+Kd 0.0588 0.0588 0.0588
+Ks 1 1 1
+d 1.0
+Ns 612.1
+
+newmtl Seat
+Ka 0.0118 0.0118 0.0118
+Kd 0.22 0.251 0.0745
+Ks 0.898 0.898 0.898
+d 1.0
+Ns 401.4
+
+newmtl Glass
+Ka 0 0 0
+Kd 0.051 0.196 0.00392
+Ks 1 1 1
+d 0.4
+Ns 1003.4
+
+newmtl Darkgrey
+Ka 0 0 0
+Kd 0 0 0
+Ks 1 1 1
+d 1.0
+Ns 1003.4
+map_Kd DARKGREY.JPG
+
+newmtl Blactire
+Ka 0 0 0
+Kd 0.125 0.125 0.125
+Ks 1 1 1
+d 1.0
+Ns 291.0
+
+newmtl SilvDeep
+Ka 0 0 0
+Kd 0.498 0.447 0.404
+Ks 1 1 1
+d 1.0
+Ns 702.4
+
+newmtl Whitemet
+Ka 0 0 0
+Kd 0.941 0.941 0.941
+Ks 1 1 1
+d 1.0
+Ns 1003.4
+
+newmtl Steel
+Ka 0 0 0
+Kd 0.557 0.655 0.655
+Ks 1 1 1
+d 1.0
+Ns 702.4
+
+newmtl BlueLigh
+Ka 0.098 0.098 0.098
+Kd 0.451 0.949 0.992
+Ks 1 1 1
+d 1.0
+Ns 431.5
+
+newmtl Estabili
+Ka 0 0 0
+Kd 0.267 0.329 0.365
+Ks 0.898 0.898 0.898
+d 1.0
+Ns 1003.4
+
+newmtl Bottesta
+Ka 0 0 0
+Kd 0.267 0.329 0.365
+Ks 1 1 1
+d 1.0
+Ns 1003.4
+
+newmtl Lighgrey
+Ka 0 0 0
+Kd 0.38 0.38 0.38
+Ks 1 1 1
+d 1.0
+Ns 1003.4
+map_Kd LIGHGREY.JPG
+
+newmtl FlatWhit
+Ka 0 0 0
+Kd 1 1 1
+Ks 1 1 1
+d 1.0
+Ns 10.0
+
+newmtl Fuselage
+Ka 0 0 0
+Kd 0.337 0.329 0.365
+Ks 1 1 1
+d 1.0
+Ns 1003.4
+
+newmtl Topfuse
+Ka 0 0 0
+Kd 0.337 0.329 0.365
+Ks 1 1 1
+d 1.0
+Ns 1003.4
+
+newmtl Botfuse
+Ka 0 0 0
+Kd 0.337 0.329 0.365
+Ks 1 1 1
+d 1.0
+Ns 1003.4
+
+newmtl Fuse2
+Ka 0 0 0
+Kd 0.337 0.329 0.365
+Ks 1 1 1
+d 1.0
+Ns 1003.4
+
+newmtl SilvDeep1
+Ka 0 0 0
+Kd 0.498 0.447 0.404
+Ks 1 1 1
+d 1.0
+Ns 702.4
+
+newmtl Grid
+Ka 0 0 0
+Kd 0.267 0.329 0.365
+Ks 0.898 0.898 0.898
+d 1.0
+Ns 1003.4
+
+newmtl ___default___
+Ka 0.878 0.878 0.878
+Kd 0.878 0.878 0.878
+Ks 1 1 1
+d 1.0
+Ns 752.6
+
+newmtl Inlet
+Ka 0 0 0
+Kd 0.267 0.329 0.365
+Ks 0.898 0.898 0.898
+d 1.0
+Ns 1003.4
+
+newmtl Topwing
+Ka 0 0 0
+Kd 0.302 0.302 0.302
+Ks 1 1 1
+d 1.0
+Ns 1003.4
+
+newmtl Botwing
+Ka 0 0 0
+Kd 0.302 0.302 0.302
+Ks 1 1 1
+d 1.0
+Ns 1003.4
+
+newmtl Topwing1
+Ka 0 0 0
+Kd 0.302 0.302 0.302
+Ks 1 1 1
+d 1.0
+Ns 1003.4
+
+newmtl Botwing1
+Ka 0 0 0
+Kd 0.302 0.302 0.302
+Ks 1 1 1
+d 1.0
+Ns 1003.4
+
+newmtl Hornfuel
+Ka 0 0 0
+Kd 0.267 0.329 0.365
+Ks 0.898 0.898 0.898
+d 1.0
+Ns 1003.4
+
+newmtl Ruddleft
+Ka 0 0 0
+Kd 0.267 0.329 0.365
+Ks 0.898 0.898 0.898
+d 1.0
+Ns 1003.4
+
+newmtl Rudder
+Ka 0 0 0
+Kd 0.267 0.329 0.365
+Ks 0.898 0.898 0.898
+d 1.0
+Ns 1003.4
+
+newmtl Missil2
+Ka 0 0 0
+Kd 0.267 0.329 0.365
+Ks 0.898 0.898 0.898
+d 1.0
+Ns 1003.4
+
+newmtl Nozzle
+Ka 0 0 0
+Kd 0.498 0.447 0.404
+Ks 1 1 1
+d 1.0
+Ns 702.4
+
+newmtl Missil
+Ka 0 0 0
+Kd 0.267 0.329 0.365
+Ks 0.898 0.898 0.898
+d 1.0
+Ns 1003.4
+
+newmtl Nozzle2
+Ka 0 0 0
+Kd 0.0275 0.0157 0
+Ks 1 1 1
+d 1.0
+Ns 371.3
+
+newmtl RedLigh
+Ka 0.098 0.098 0.098
+Kd 1 0.114 0.176
+Ks 1 1 1
+d 1.0
+Ns 431.5
+
+newmtl Ruddrigh
+Ka 0 0 0
+Kd 0.267 0.329 0.365
+Ks 0.898 0.898 0.898
+d 1.0
+Ns 1003.4
+
+newmtl Win2
+Ka 0 0 0
+Kd 0.267 0.329 0.365
+Ks 0.898 0.898 0.898
+d 1.0
+Ns 1003.4
+
+newmtl Weapsupp
+Ka 0 0 0
+Kd 0.267 0.329 0.365
+Ks 0.898 0.898 0.898
+d 1.0
+Ns 1003.4
+
